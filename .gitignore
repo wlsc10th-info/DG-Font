@@ -248,6 +248,7 @@ fabric.properties
 .idea/caches/build_file_checksums.ser
 
 # custom
-train_data/
-data/
-logs/
+train_data/**
+data/**
+logs/**
+results/**
