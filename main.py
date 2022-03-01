@@ -248,7 +248,8 @@ def main_worker(gpu, ngpus_per_node, args):
 
         trainFunc(train_loader, networks, opts, epoch, args, {'logger': logger})
 
-        validationFunc(val_loader, networks, epoch, args, {'logger': logger})
+        if (epoch + 1) % (args.epochs // 25) == 0:
+            validationFunc(val_loader, networks, epoch, args, {'logger': logger})
 
 #################
 # Sub functions #
