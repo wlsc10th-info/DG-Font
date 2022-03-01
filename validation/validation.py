@@ -7,6 +7,7 @@ import torchvision.utils as vutils
 import torch.nn.functional as F
 
 import numpy as np
+from pathlib import Path
 
 try:
     from tqdm import tqdm
@@ -90,8 +91,12 @@ def validateUN(data_loader, networks, epoch, args, additional=None):
     
                         x_rnd_ema_tmp = torch.cat((x_ref_rnd[sample_idx: sample_idx + 1], x_rnd_ema_tmp), 0)
                         x_rnd_ema = torch.cat((x_rnd_ema, x_rnd_ema_tmp), 0)
-    
-                    vutils.save_image(x_res_ema, os.path.join(args.res_dir, '{}_EMA_{}_{}_{}.jpg'.format(args.gpu, epoch+1, src_idx, ref_idx)), normalize=True,
+
+                    save_path = Path(args.res_dir) / f'{epoch+1}'
+                    if not save_path.exists():
+                        save_path.mkdir()
+
+                    vutils.save_image(x_res_ema, save_path / ('{}_EMA_{}_{}_{}.jpg'.format(args.gpu, epoch+1, src_idx, ref_idx)), normalize=True,
                                     nrow=(x_res_ema.size(0) // (x_src.size(0) + 2) + 1))
-                    vutils.save_image(x_rnd_ema, os.path.join(args.res_dir, '{}_RNDEMA_{}_{}_{}.jpg'.format(args.gpu, epoch+1, src_idx, ref_idx)), normalize=True,
+                    vutils.save_image(x_rnd_ema, save_path / ('{}_RNDEMA_{}_{}_{}.jpg'.format(args.gpu, epoch+1, src_idx, ref_idx)), normalize=True,
                                     nrow=(x_res_ema.size(0) // (x_src.size(0) + 2) + 1))
